@@ -63,16 +63,9 @@ You also need the **universe ID** of your experience, which is different from th
 
 ## 2. Install
 
-Requires Node.js 20+.
+Requires Node.js 20+. The server is published on npm as [`@studmill/roblox-creator-hub-mcp`](https://www.npmjs.com/package/@studmill/roblox-creator-hub-mcp). The MCP configs below run it with `npx`, so there is nothing to install by hand.
 
-```bash
-git clone https://github.com/chihebnabil/roblox-creator-hub-mcp.git
-cd roblox-creator-hub-mcp
-npm install
-npm run build
-```
-
-This produces `dist/index.js`. The MCP configs below use its absolute path.
+To run it from source instead, clone the repo, run `npm install && npm run build`, and replace `npx -y @studmill/roblox-creator-hub-mcp` with `node /absolute/path/to/roblox-creator-hub-mcp/dist/index.js` in the configs below.
 
 ## 3. Connect it to your MCP client
 
@@ -83,7 +76,7 @@ claude mcp add roblox \
   -e ROBLOX_API_KEY=your-api-key \
   -e ROBLOX_UNIVERSE_ID=1234567890 \
   -e ROBLOX_PLACE_ID=9876543210 \
-  -- node /absolute/path/to/roblox-creator-hub-mcp/dist/index.js
+  -- npx -y @studmill/roblox-creator-hub-mcp
 ```
 
 ### Claude Desktop
@@ -94,8 +87,8 @@ Edit `claude_desktop_config.json`. Open it from **Settings → Developer → Edi
 {
   "mcpServers": {
     "roblox": {
-      "command": "node",
-      "args": ["/absolute/path/to/roblox-creator-hub-mcp/dist/index.js"],
+      "command": "npx",
+      "args": ["-y", "@studmill/roblox-creator-hub-mcp"],
       "env": {
         "ROBLOX_API_KEY": "your-api-key",
         "ROBLOX_UNIVERSE_ID": "1234567890",
@@ -106,7 +99,7 @@ Edit `claude_desktop_config.json`. Open it from **Settings → Developer → Edi
 }
 ```
 
-On Windows, use a path like `C:\\Users\\you\\roblox-creator-hub-mcp\\dist\\index.js`. Restart Claude Desktop after saving.
+Restart Claude Desktop after saving.
 
 ### Cursor / VS Code / other clients
 
