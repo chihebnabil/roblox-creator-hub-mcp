@@ -7,7 +7,7 @@ on:
 
 permissions:
   contents: read
-  id-token: write # needed for npm provenance (public repos only)
+  id-token: write # npm trusted publishing (OIDC) and provenance
 
 concurrency:
   group: npm-publish
@@ -17,13 +17,16 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: 24
           registry-url: https://registry.npmjs.org
           cache: npm
+
+      # Trusted publishing (OIDC) needs npm 11.5.1 or newer.
+      - run: npm install -g npm@latest
 
       - run: npm ci
 
@@ -50,6 +53,8 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+      # Auth: npm trusted publishing (OIDC, configured on npmjs.com) when set up,
+      # otherwise the NPM_TOKEN repository secret.
       # prepublishOnly runs the build and the test suite before publishing.
       # Prereleases go to the "next" dist-tag so they don't become the default install.
       # Provenance is only supported for public repositories.

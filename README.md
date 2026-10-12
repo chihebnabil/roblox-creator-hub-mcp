@@ -79,6 +79,12 @@ claude mcp add roblox \
   -- npx -y @studmill/roblox-creator-hub-mcp
 ```
 
+On native Windows, PowerShell drops a bare `--`, and `npx` has to be started through `cmd /c`:
+
+```powershell
+claude mcp add roblox -e ROBLOX_API_KEY=your-api-key -e ROBLOX_UNIVERSE_ID=1234567890 '--' cmd /c npx -y @studmill/roblox-creator-hub-mcp
+```
+
 ### Claude Desktop
 
 Edit `claude_desktop_config.json`. Open it from **Settings → Developer → Edit Config**. It lives at `~/Library/Application Support/Claude/` on macOS and `%APPDATA%\Claude\` on Windows.
@@ -170,10 +176,9 @@ test/                 node:test suite with an in-memory MCP client and fake fetc
 
 Publishing to npm is automated by `.github/workflows/publish.yml`:
 
-1. **One-time setup:**
-   - Create an npm **granular access token** with read and write access to `@studmill` packages.
-   - Add it as a repository secret named `NPM_TOKEN` under **Settings → Secrets and variables → Actions**.
-   - If your npm account requires 2FA for publishing, allow this token to publish without it.
+1. **One-time setup:** choose one of these.
+   - **Recommended: trusted publishing (no token).** On npmjs.com, open the package → **Settings** → **Trusted Publisher** → **GitHub Actions**. Enter owner `chihebnabil`, repository `roblox-creator-hub-mcp`, and workflow `publish.yml`.
+   - **Token:** create an npm granular access token with read and write access to `@studmill` packages. Add it as a repository secret named `NPM_TOKEN` under **Settings → Secrets and variables → Actions**.
 2. **Bump the version:** run `npm version patch` (or `minor` / `major`), then push the commit and tag: `git push --follow-tags`.
 3. **Create a GitHub release** for that tag, e.g. `v0.1.1`.
 
