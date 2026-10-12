@@ -16,7 +16,7 @@ import { registerUniverseTools } from "./tools/universes.js";
 import { registerUserAndGroupTools } from "./tools/users-groups.js";
 
 export const SERVER_NAME = "roblox-creator-hub";
-export const SERVER_VERSION = "0.1.0";
+export const SERVER_VERSION = "0.1.1";
 
 export function createServer(config: Config, client = new RobloxClient(config)): McpServer {
   const defaults = [
