@@ -6,7 +6,7 @@ It runs on your machine over stdio. Your API key stays in your local MCP config 
 
 ## What it can do
 
-69 tools, grouped by area:
+84 tools, grouped by area:
 
 | Area | Tools |
 | --- | --- |
@@ -18,6 +18,9 @@ It runs on your machine over stdio. Your API key stays in your local MCP config 
 | **Moderation** | `roblox_list_bans`, `roblox_get_ban`, `roblox_ban_user`, `roblox_unban_user`, `roblox_list_ban_logs` |
 | **Luau execution** | `roblox_run_luau` (run a script headlessly against a place and get results + `print` logs), `roblox_get_luau_task` |
 | **Place instances** | `roblox_get_instance`, `roblox_list_instance_children`, `roblox_update_script_source` |
+| **Game servers & crashes** | `roblox_list_server_crashes` (servers that crashed or ran out of memory), `roblox_get_game_server_logs` (errors and stack traces for one server), `roblox_list_game_servers`, `roblox_get_game_server_filter_options`, `roblox_list_place_versions` |
+| **Analytics** | `roblox_query_analytics` (time series metrics with breakdowns, as in the Creator Hub dashboards) |
+| **Ad campaigns** (Ads Manager) | `roblox_list_ad_campaigns`, `roblox_get_ad_campaign`, `roblox_get_ad_campaign_status`, `roblox_create_ad_campaign`, `roblox_update_ad_campaign` (rename, budget, schedule, pause/resume/cancel), `roblox_get_ad_campaign_options`, `roblox_list_advertisable_universes`, `roblox_list_ad_creatives`, `roblox_list_ad_billing_accounts` |
 | **Monetization** | `roblox_list_game_passes`, `roblox_get_game_pass`, `roblox_create_game_pass`, `roblox_update_game_pass`, `roblox_list_developer_products`, `roblox_get_developer_product`, `roblox_create_developer_product`, `roblox_update_developer_product` |
 | **Users** | `roblox_get_user`, `roblox_get_user_thumbnail`, `roblox_list_user_inventory`, `roblox_send_user_notification` |
 | **Groups** | `roblox_get_group`, `roblox_list_group_roles`, `roblox_list_group_members`, `roblox_set_group_member_role`, `roblox_list_group_join_requests`, `roblox_review_group_join_request` |
@@ -45,6 +48,9 @@ The last three cover the rest of Open Cloud. The server ships a catalog of the *
    | Place instances | `universe.place.instance` | read, write |
    | Game passes / developer products | `game-pass`, `developer-product` | read, write |
    | Groups | `group` | read, write |
+   | Game servers, crash logs, place versions | `universe`, `universe.place` | read |
+   | Analytics | `universe.analytics` | read |
+   | Ad campaigns | `ad.campaign` (and `ad.billing` for billing accounts) | read, write |
    | User inventory / notifications | `user.inventory-item`, `user.user-notification` | read / write |
 
    Every tool description lists its exact scope, and `roblox_describe_endpoint` shows the scopes for any endpoint.
@@ -126,6 +132,9 @@ Use the same `command`, `args` and `env` in the client's MCP settings: `.cursor/
 - "Upload `C:\art\logo.png` as a decal owned by my user 42."
 - "Publish `./build/game.rbxl` to my place, then restart outdated servers."
 - "Run a Luau script in my place that counts the parts in Workspace."
+- "Did any servers crash on the latest version? Show me the errors before each crash."
+- "List my ad campaigns and pause the ones that aren't serving."
+- "Create a $20/day PLAYS campaign for my experience in the US and UK for 7 days starting tomorrow, using image asset 123."
 - "Create a VIP game pass for 199 Robux."
 - "Show my experience's top 10 on the `Wins` ordered data store."
 - "Find the Open Cloud endpoint for creating badges and create one called 'First Win'."
@@ -135,6 +144,8 @@ Use the same `command`, `args` and `env` in the client's MCP settings: `.cursor/
 - Tools that change data carry MCP annotations (`readOnlyHint`, `destructiveHint`), so clients can ask before running them. Deleting data stores, flushing memory stores, restarting servers and bans are all marked destructive.
 - `ROBLOX_READ_ONLY=true` is the simplest way to let a model explore without risk.
 - The API key goes only to `https://*.roblox.com`. Requests to any other host are refused, and tools cannot override the `x-api-key` header.
+- `roblox_create_ad_campaign` and `roblox_update_ad_campaign` spend real money. The create tool sends an idempotency key, so a retry won't create a duplicate campaign.
+- The Server Management, Analytics and Ads APIs are marked **beta** by Roblox and may change.
 - `roblox_run_luau` runs in a temporary server. DataModel changes are not saved, but data store and other API calls made from the script are real.
 
 ## Development
