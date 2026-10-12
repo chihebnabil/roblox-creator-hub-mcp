@@ -1,0 +1,50 @@
+{
+  "name": "roblox-creator-hub-mcp",
+  "version": "0.1.0",
+  "description": "Local MCP server for managing Roblox experiences via the Creator Hub / Open Cloud API using an API key.",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc -p . && node -e \"require('fs').chmodSync('dist/index.js',0o755)\"",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit -p .",
+    "test": "npm run build && node --test test/*.test.mjs",
+    "generate-catalog": "node scripts/generate-catalog.mjs",
+    "inspect": "npx @modelcontextprotocol/inspector node dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chihebnabil/roblox-creator-hub-mcp.git"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "roblox",
+    "open-cloud",
+    "creator-hub"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/chihebnabil/roblox-creator-hub-mcp/issues"
+  },
+  "homepage": "https://github.com/chihebnabil/roblox-creator-hub-mcp#readme",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.1",
+    "zod": "^4.6.6"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "typescript": "^7.0.2"
+  },
+  "type": "module",
+  "bin": {
+    "roblox-creator-hub-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "author": "chihebnabil"
+}
