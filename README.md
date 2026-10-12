@@ -166,6 +166,25 @@ scripts/generate-catalog.mjs
 test/                 node:test suite with an in-memory MCP client and fake fetch
 ```
 
+## Releasing
+
+Publishing to npm is automated by `.github/workflows/publish.yml`:
+
+1. **One-time setup:**
+   - Create an npm **granular access token** with read and write access to `@studmill` packages.
+   - Add it as a repository secret named `NPM_TOKEN` under **Settings → Secrets and variables → Actions**.
+   - If your npm account requires 2FA for publishing, allow this token to publish without it.
+2. **Bump the version:** run `npm version patch` (or `minor` / `major`), then push the commit and tag: `git push --follow-tags`.
+3. **Create a GitHub release** for that tag, e.g. `v0.1.1`.
+
+The workflow then does three things:
+
+- It checks that the release tag matches `version` in `package.json`.
+- It runs the tests.
+- It publishes the package. A release marked as a pre-release goes to the `next` dist-tag instead of `latest`.
+
+If that version is already on npm, the workflow skips publishing instead of failing. You can also run the workflow manually from the **Actions** tab.
+
 ## License
 
 MIT
