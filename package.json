@@ -1,5 +1,5 @@
 {
-  "name": "roblox-creator-hub-mcp",
+  "name": "@studmill/roblox-creator-hub-mcp",
   "version": "0.1.0",
   "description": "Local MCP server for managing Roblox experiences via the Creator Hub / Open Cloud API using an API key.",
   "main": "dist/index.js",
@@ -9,7 +9,8 @@
     "typecheck": "tsc --noEmit -p .",
     "test": "npm run build && node --test test/*.test.mjs",
     "generate-catalog": "node scripts/generate-catalog.mjs",
-    "inspect": "npx @modelcontextprotocol/inspector node dist/index.js"
+    "inspect": "npx @modelcontextprotocol/inspector node dist/index.js",
+    "prepublishOnly": "npm test"
   },
   "repository": {
     "type": "git",
@@ -41,10 +42,15 @@
   },
   "files": [
     "dist",
-    "README.md"
+    "!dist/**/*.map",
+    "README.md",
+    "LICENSE"
   ],
   "engines": {
     "node": ">=20"
   },
-  "author": "chihebnabil"
+  "author": "chihebnabil",
+  "publishConfig": {
+    "access": "public"
+  }
 }
